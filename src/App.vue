@@ -1,32 +1,30 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app>
+    <v-overlay :value="overlay" v-if="overlay">
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
+    <v-main v-else>
+      <router-view :key="$route.path" />
+    </v-main>
+  </v-app>
 </template>
 
+<script>
+export default {
+  name: 'App',
+  data: () => ({
+    overlay: false,
+    isLoggedIn: false
+  }),
+};
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+::-webkit-scrollbar {
+  display: none;
 }
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+::-webkit-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 </style>
