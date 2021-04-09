@@ -1,11 +1,8 @@
 <template>
-  <div>
-    <v-app-bar dens dark>
-      <v-toolbar-title>Page title</v-toolbar-title>
-
-      <v-spacer></v-spacer>
-
-      
-    </v-app-bar>
-  </div>
+  <v-app-bar app dark color="primary" absolute>
+    <v-toolbar-title>Alice</v-toolbar-title>
+    <v-spacer></v-spacer>  
+    <v-btn text tile to="/news">news</v-btn> 
+    <v-btn text tile to="/images">images</v-btn> 
+  </v-app-bar>
 </template>
