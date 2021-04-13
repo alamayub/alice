@@ -20,40 +20,11 @@
 </template>
 
 <script>
-import { fb } from '../firebase'
-import axios from 'axios'
 export default {
-  data: () => ({
-    username: null,
-    articles: []
-  }),
   created() {
-    this.getNews()
-  },
-  methods: {
-    async getNews() {
-      this.$store.commit('SET_IS_LOADING', true)
-      // await axios.get('http://newsapi.org/v2/everything?q=apple&from=2021-03-09&to=2021-03-09&sortBy=popularity&apiKey=b306ea01774245768bd631e39743ecea')
-      await axios.get('http://newsapi.org/v2/everything?q=apple&from=2021-03-09&to=2021-03-09&sortBy=popularity&apiKey=b306ea01774245768bd631e39743ecea')
-      .then( res => {
-        this.articles = res.data.articles
-        console.log(res.data.articles)
-      }).catch( e => console.error(e))
-      this.$store.commit('SET_IS_LOADING', false)
-    },
-    async logout() {
-      this.overlay = true
-      await fb.auth().signOut().then( () => {
-        localStorage.removeItem('username')
-        localStorage.removeItem('email')
-      }).catch( e => console.log(e))
-      this.overlay = false
-    }
+    this.$store.dispatch('getNews')
   },
   computed: {
-    name: () => {
-      return localStorage.getItem('username')
-    },
     height () {
       switch (this.$vuetify.breakpoint.name) {
         case 'xs': return 22
@@ -62,6 +33,9 @@ export default {
         default: return 28
       }
     },
+    articles() {
+      return this.$store.state.news
+    }
   },
 }
 </script>

@@ -1,31 +1,29 @@
 <template>
   <v-app>
     <v-overlay :value="overlay" v-if="overlay">
-      <v-progress-circular indeterminate size="64"></v-progress-circular>
+      <v-progress-circular indeterminate size="64" />
     </v-overlay>
-    <Navbar v-show="token" />
+    <Navbar />
     <v-main>
       <router-view :key="$route.path" />
     </v-main>
+    <Footer />
   </v-app>
 </template>
 
 <script>
 import Navbar from './components/Navbar'
+import Footer from './components/Footer'
 export default {
   name: 'App',
   components: {
-    Navbar
+    Navbar, Footer
   },
   computed: {
     overlay() {
       return this.$store.state.isLoading
     }
   },
-  created() {
-    this.token = localStorage.getItem('username')
-    console.log(localStorage.getItem('username'))
-  }
 };
 </script>
 

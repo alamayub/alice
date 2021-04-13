@@ -1,9 +1,10 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-row>
+      <v-col cols="12" class="display-1 text-center">Explore The Best Quanlity of Photos</v-col>
       <v-col cols="12">
         <div class="gallery">
-          <div class="img-class" v-for="(img, i) in images" :key="i">
+          <div class="img-class" v-for="(img, i) in images" :key="i" @click="viewImage(img)">
             <v-img class="img" :src="img.urls.small" :lazy-src="img.urls.small">
               <div class="text">
                 <div class="text-capitalize head">{{ img.alt_description }}</div>
@@ -12,30 +13,27 @@
           </div>
         </div>
       </v-col>
+      <v-col cols="12" class="text-center">
+        <v-pagination v-model="currentPage" :length="totalPages" :total-visible="7" @input="changePage" />
+      </v-col>
     </v-row>
   </v-container>  
 </template>
 
 <script>
-import axios from 'axios'
 export default {
-  data: () => ({
-    images: [],
-    page: 1
-  }),
   created() {
-    this.getImages()
+    this.$store.dispatch('getImages')
   },
   methods: {
-    async getImages() {
-      this.$store.commit('SET_IS_LOADING', true)
-      await axios.get('https://api.unsplash.com/photos?per_page=50&client_id=gK52De2Tm_dL5o1IXKa9FROBAJ-LIYqR41xBdlg3X2k')
-      .then( res => {
-        console.log(res.data)
-        this.images = res.data
-      }).catch( e => console.log(e))
-      this.$store.commit('SET_IS_LOADING', false)
+    changePage(page) {
+      this.$store.commit('SET_CURRENT_PAGE', page)
+      this.$store.dispatch('getImages')
     },
+    viewImage(img) {
+      console.log(img)
+      this.$router.push(`/images/${img.id}`)
+    }
   },
   
   computed: {
@@ -47,6 +45,15 @@ export default {
         default: return 28
       }
     },
+    images() {
+      return this.$store.state.images
+    },
+    currentPage() {
+      return this.$store.state.current_page
+    },
+    totalPages() {
+      return this.$store.state.total_pages
+    }
   },
 }
 </script>
